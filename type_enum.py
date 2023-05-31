@@ -1,3 +1,6 @@
-from enum import enum
+from enum import Enum
 
-class TypeEnum(enum )
+
+class TypeEnum(Enum):
+    QUESTION = "Question"
+    ANSWER = "Answer"

@@ -1,12 +1,16 @@
 import random
 from tree import Tree
+from node import Node
 
-#verificar loops dos metodos make_question e make_guess
-#continuar do metodo make_guess
+# verificar loops dos metodos make_question e make_guess
+# continuar do metodo make_guess
+from type_enum import TypeEnum
+
 
 class Game_controler:
     def __init__(self):
         self.__tree = Tree()
+        self.build_tree()
         self.start_menu()
 
     def start_menu(self):
@@ -16,7 +20,6 @@ class Game_controler:
         print("2 -> Continuar jogo anterior")
         option = input("Digite a opção escolhida (1 ou 2):")
         if option == "1":
-            print("Pense em um PAÍS!")
             self.start_new_game()
         elif option == "2":
             print("Zerando minha memória")
@@ -24,7 +27,7 @@ class Game_controler:
             print("Opção errada")
 
     def start_new_game(self):
-        self.build_tree()
+        print("Pense em um PAÍS!")
         self.go_through_tree(self.__tree.root)
 
     def build_tree(self):
@@ -37,7 +40,7 @@ class Game_controler:
             answer = input("Digite uma resposta válida (s/n):")
         return answer
 
-    def make_guess(self, node):
+    def make_guess(self, node: Node):
         is_right = input(f'O país que você está pensando é {node.value}? (s/n)')
         while is_right.lower() != "s" and is_right.lower() != "n":
             is_right = input("Digite uma resposta válida (s/n):")
@@ -49,21 +52,24 @@ class Game_controler:
                                      "Eba! Mais uma vez acertei em cheio!",
                                      "Eu sabia! Minhas habilidades de adivinhação são incríveis!"]
             print(right_guessed_answers[random.randint(0, len(right_guessed_answers) - 1)])
+            self.start_menu()
 
         elif is_right == "n":
             right_guess = input("Qual país você pensou?")
             new_question = input(f"Me diga uma pergunta de SIM ou NÃO que diferencie a/o {node.value} do(a) \n"
                                  f"{right_guess}, sendo Sim para o {right_guess} e não para {node.value}")
-            self.__tree.insert_question_and_answers(new_question, right_guess, node.value, node.value)
+            self.__tree.insert_question_and_answers(new_question, right_guess, node.value, node)
+            self.start_new_game()
 
     def go_through_tree(self, root):
-        if root.type == "question":
+        if root.type == TypeEnum.QUESTION:
             answer = self.make_question(root)
             if answer == "s":
                 self.go_through_tree(root.left_node)
             else:
                 self.go_through_tree(root.right_node)
-        elif root.type == "answer":
+        elif root.type == TypeEnum.ANSWER:
             self.make_guess(root)
+
 
 controller = Game_controler()

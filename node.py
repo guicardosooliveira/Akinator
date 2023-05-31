@@ -1,5 +1,8 @@
+from type_enum import TypeEnum
+
+
 class Node:
-    def __init__(self, type, value):
+    def __init__(self, type: TypeEnum, value):
         self.__left_node = None
         self.__right_node = None
         self.__type = type
