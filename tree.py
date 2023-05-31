@@ -29,8 +29,3 @@ class Tree:
 
         else:
             self.__root = node_to_insert
-
-    def get_parent_by_child(self, child_value):
-        pointer = self.__root
-        while pointer.left_node.value != child_value or pointer.right_node.value != child_value:
-            pointer = pointer.left_node
